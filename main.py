@@ -3,7 +3,7 @@ import pygame
 size = [800, 800]
 
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('DADA')
+pygame.display.set_caption('Змейка')
 
 while True:
 
