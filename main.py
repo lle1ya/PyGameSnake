@@ -1,6 +1,6 @@
 import pygame
 
-size = [800, 800]
+size = [600, 600]
 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Змейка')
