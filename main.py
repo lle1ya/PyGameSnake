@@ -33,6 +33,12 @@ while True:
     snake.append((x, y))
     snake = snake[-length:]
 
+    # Поедание яблок
+    if snake[-1] == apple:
+        apple = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
+        length += 1
+        fps += 0.25
+
     pygame.display.flip()
     clock.tick(fps)
 
