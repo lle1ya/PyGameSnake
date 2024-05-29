@@ -15,7 +15,7 @@ pygame.display.set_caption('Змейка')
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
-fps = 5
+fps = 4
 
 pygame.init()
 sc = pygame.display.set_mode([RES, RES])
