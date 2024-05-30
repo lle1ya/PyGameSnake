@@ -15,7 +15,7 @@ pygame.display.set_caption('Змейка')
 white = (255, 255, 255)
 black = (0, 0, 0)
 
-# Основной цикл игры
+# Основной цикл игрыы
 def main_menu():
     menu = True
     while menu:
