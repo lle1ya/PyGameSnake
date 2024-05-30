@@ -41,7 +41,7 @@ while True:
         fps += 0.25
 
     # Проигрыш
-    if x < 0 or 0 > RES - SIZE or y < 0 or y > RES - SIZE:
+    if (x < 0 or x > RES - SIZE) or (y < 0 or y > RES - SIZE):
         break
     if len(snake) != len(set(snake)):
         break

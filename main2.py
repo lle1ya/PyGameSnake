@@ -71,17 +71,28 @@ dirs = {'W': True, 'S': True, 'A': True, 'D': True}
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
+score = 0
 fps = 4
 
 pygame.init()
 sc = pygame.display.set_mode([RES, RES])
 clock = pygame.time.Clock()
+font_score = pygame.font.SysFont('Arial', 26, bold=True)
+font_fps = pygame.font.SysFont('Arial', 26, bold=True)
+font_end = pygame.font.SysFont('Arial', 66, bold=True)
+
 while True:
     sc.fill(pygame.Color('black'))
 
     # Рисование змейки и яблока
-    [(pygame.draw.rect(sc, pygame.Color('green'), (i,j, SIZE, SIZE))) for i, j in snake]
+    [(pygame.draw.rect(sc, pygame.Color('green'), (i,j, SIZE - 2, SIZE - 2))) for i, j in snake]
     pygame.draw.rect(sc, pygame.Color('red'), (*apple, SIZE, SIZE))
+
+    #Очки и скорость
+    render_score = font_score.render(f'ОЧКИ: {score}', 1, pygame.Color('orange'))
+    sc.blit(render_score, (5, 5))
+    render_fps = font_fps.render(f'СКОРОСТЬ: {fps}', 1, pygame.Color('green'))
+    sc.blit(render_fps, (580, 5))
 
     # Движение змейки
     x += dx * SIZE
@@ -93,13 +104,18 @@ while True:
     if snake[-1] == apple:
         apple = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
         length += 1
-        fps += 0.25
+        score += 100
+        fps += 0.5
 
     # Проигрыш
-    if x < 0 or 0 > RES - SIZE or y < 0 or y > RES - SIZE:
-        break
-    if len(snake) != len(set(snake)):
-        break
+    if (x < 0 or x > RES - SIZE) or (y < 0 or y > RES - SIZE) or (len(snake) != len(set(snake))):
+        while True:
+            render_end = font_end.render('КОНЕЦ ИГРЫ', 1, pygame.Color('orange'))
+            sc.blit(render_end, (RES // 2 - 200, RES // 3))
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
 
     pygame.display.flip()
     clock.tick(fps)
