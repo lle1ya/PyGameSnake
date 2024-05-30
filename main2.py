@@ -80,9 +80,10 @@ clock = pygame.time.Clock()
 font_score = pygame.font.SysFont('Arial', 26, bold=True)
 font_fps = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
+img = pygame.image.load('1.jpg').convert()
 
 while True:
-    sc.fill(pygame.Color('black'))
+    sc.blit(img,(0, 0))
 
     # Рисование змейки и яблока
     [(pygame.draw.rect(sc, pygame.Color('green'), (i,j, SIZE - 2, SIZE - 2))) for i, j in snake]
