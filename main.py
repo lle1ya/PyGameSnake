@@ -15,6 +15,14 @@ pygame.display.set_caption('Змейка')
 white = (255, 255, 255)
 black = (0, 0, 0)
 
+# Генерация нового яблока
+def generate_apple(snake, RES, SIZE):
+    while True:
+        apple = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
+        # Проверяем, не совпадают ли координаты яблока с координатами сегментов змеи
+        if apple not in snake:
+            return apple
+
 # Основной цикл игры
 def main_menu():
     menu = True
@@ -59,13 +67,48 @@ def main_menu():
 
         pygame.display.update()
 
+# Функция для отображения экрана после окончания игры
+def game_over_menu():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Получаем позицию клика мыши
+                mouse = pygame.mouse.get_pos()
+                # Проверяем, был ли клик на кнопке "Новая игра"
+                if 350+100 > mouse[0] > 350 and 450+50 > mouse[1] > 450:
+                    # Начинаем новую игру
+                    return
+
+        # Отображение сообщения о завершении игры
+        screen.fill(white)
+        font = pygame.font.SysFont(None, 75)
+        text = font.render("КОНЕЦ ИГРЫ", True, black)
+        screen.blit(text, (screen_width/2 - text.get_width()/2, screen_height/3))
+
+        # Создание кнопки "Новая игра"
+        mouse = pygame.mouse.get_pos()
+        if 350+100 > mouse[0] > 350 and 450+50 > mouse[1] > 450:
+            pygame.draw.rect(screen, black,(350,440,135,50))
+        else:
+            pygame.draw.rect(screen, white,(350,450,100,50))
+
+        # Отображение текста на кнопке "Новая игра"
+        small_font = pygame.font.SysFont(None, 35)
+        text_restart = small_font.render("Новая игра", True, black)
+        screen.blit(text_restart, (350,450))
+
+        pygame.display.update()
+
 main_menu()
 
 RES = 800
 SIZE = 50
 
 x, y = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
-apple = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
+apple = generate_apple([(x, y)], RES, SIZE)
 dirs = {'W': True, 'S': True, 'A': True, 'D': True}
 
 length = 1
@@ -103,20 +146,23 @@ while True:
 
     # Поедание яблок
     if snake[-1] == apple:
-        apple = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
+        apple = generate_apple(snake, RES, SIZE)
         length += 1
         score += 100
         fps += 0.5
 
     # Проигрыш
     if (x < 0 or x > RES - SIZE) or (y < 0 or y > RES - SIZE) or (len(snake) != len(set(snake))):
-        while True:
-            render_end = font_end.render('КОНЕЦ ИГРЫ', 1, pygame.Color('orange'))
-            sc.blit(render_end, (RES // 2 - 200, RES // 3))
-            pygame.display.flip()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    exit()
+        game_over_menu()
+        # После окончания игры обновляем переменные и начинаем новую игру
+        x, y = randrange(0, RES, SIZE), randrange(0, RES, SIZE)
+        apple = generate_apple([(x, y)], RES, SIZE)
+        dirs = {'W': True, 'S': True, 'A': True, 'D': True}
+        length = 1
+        snake = [(x, y)]
+        dx, dy = 0, 0
+        score = 0
+        fps = 4
 
     pygame.display.flip()
     clock.tick(fps)
