@@ -135,7 +135,7 @@ while True:
     #Очки и скорость
     render_score = font_score.render(f'ОЧКИ: {score}', 1, pygame.Color('orange'))
     sc.blit(render_score, (5, 5))
-    render_fps = font_fps.render(f'СКОРОСТЬ: {fps}', 1, pygame.Color('green'))
+    render_fps = font_fps.render(f'СКОРОСТЬ: {int(fps * 10)}', 1, pygame.Color('green'))
     sc.blit(render_fps, (580, 5))
 
     # Движение змейки
