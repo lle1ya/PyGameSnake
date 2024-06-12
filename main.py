@@ -14,6 +14,7 @@ pygame.display.set_caption('Змейка')
 # Цвета
 white = (255, 255, 255)
 black = (0, 0, 0)
+gray = (200, 200, 200)
 
 # Генерация нового яблока
 def generate_apple(snake, RES, SIZE):
@@ -22,6 +23,13 @@ def generate_apple(snake, RES, SIZE):
         # Проверяем, не совпадают ли координаты яблока с координатами сегментов змеи
         if apple not in snake:
             return apple
+
+# Функция для рисования сетки
+def draw_grid(screen, RES, SIZE):
+    for x in range(0, RES, SIZE):
+        for y in range(0, RES, SIZE):
+            rect = pygame.Rect(x, y, SIZE, SIZE)
+            pygame.draw.rect(screen, gray, rect, 1)
 
 # Основной цикл игры
 def main_menu():
@@ -126,13 +134,16 @@ font_end = pygame.font.SysFont('Arial', 66, bold=True)
 img = pygame.image.load('1.jpg').convert()
 
 while True:
-    sc.blit(img,(0, 0))
+    # Рисуем фон
+    sc.blit(img, (0, 0))
+    # Рисуем сетку поверх фона
+    draw_grid(sc, RES, SIZE)
 
     # Рисование змейки и яблока
-    [(pygame.draw.rect(sc, pygame.Color('green'), (i,j, SIZE - 2, SIZE - 2))) for i, j in snake]
+    [(pygame.draw.rect(sc, pygame.Color('green'), (i, j, SIZE - 2, SIZE - 2))) for i, j in snake]
     pygame.draw.rect(sc, pygame.Color('red'), (*apple, SIZE, SIZE))
 
-    #Очки и скорость
+    # Очки и скорость
     render_score = font_score.render(f'ОЧКИ: {score}', 1, pygame.Color('orange'))
     sc.blit(render_score, (5, 5))
     render_fps = font_fps.render(f'СКОРОСТЬ: {int(fps * 10)}', 1, pygame.Color('green'))
